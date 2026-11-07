@@ -1,6 +1,14 @@
 ---
-import "../pages/global.css";
-const { title = "Dr. Anurag Tiwari | Academic Website", description = "Research, publications and academic profile of Dr. Anurag Tiwari." } = Astro.props;
+import "../styles/global.css";
+const {
+  title = "Anurag Tiwari — Machine learning for biological signals and images",
+  description = "Dr. Anurag Tiwari, Assistant Professor of Computer Science and Engineering at South Asian University, New Delhi. Machine learning for EEG, medical imaging and omics data, and evaluation that can be trusted."
+} = Astro.props;
+// Works with base "/anuragtiwari.cse.github.io" today and with base "/" after a repo rename.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname;
+const onHome = path === `${base}/` || path === base || path === "/";
+const home = onHome ? "" : `${base}/`;
 ---
 <!doctype html>
 <html lang="en">
@@ -8,13 +16,42 @@ const { title = "Dr. Anurag Tiwari | Academic Website", description = "Research,
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#101d2b" />
+    <meta name="theme-color" content="#FAFBF7" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${base}/images/profile-outdoor.jpeg`} />
     <title>{title}</title>
+    <link rel="icon" href={`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231D2522'/><path d='M3 17h6l3-8 4 15 3-11 2 4h8' fill='none' stroke='%237FD1B9' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/></svg>`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <slot />
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="wordmark" href={`${base}/`}>Anurag Tiwari</a>
+        <nav aria-label="Main">
+          <a href={`${home}#research`}>Research</a>
+          <a href={`${home}#news`}>News</a>
+          <a href={`${base}/publications/`} aria-current={path.includes("/publications") ? "page" : undefined}>Publications</a>
+          <a href={`${home}#background`}>Background</a>
+          <a href={`${home}#contact`}>Contact</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <span>Anurag Tiwari, South Asian University, New Delhi</span>
+        <span>
+          <a href="https://scholar.google.com/citations?user=HLtrjaMAAAAJ&hl=en">Google Scholar</a>
+          <a href="https://orcid.org/0000-0001-6816-0113">ORCID</a>
+          <a href="https://github.com/anuragtiwari575">GitHub</a>
+        </span>
+      </div>
+    </footer>
   </body>
 </html>

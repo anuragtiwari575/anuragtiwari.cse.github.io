@@ -1,66 +1,94 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { publications } from "../../data/publications.js";
-const years = [...new Set(publications.map((p) => p.year).filter(Boolean))].sort((a,b) => b-a);
+import { publications, themes } from "../../data/publications.js";
+
+const scholarSearch = (t) => `https://scholar.google.com/scholar?q=${encodeURIComponent(`"${t}"`)}`;
+const bold = (authors) => authors.replace(/A\. Tiwari/g, "<strong>A. Tiwari</strong>");
+const years = [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a);
+const types = [...new Set(publications.map((p) => p.type))];
+const byYear = years.map((y) => ({ year: y, items: publications.filter((p) => p.year === y) }));
 ---
-<BaseLayout title="Publications | Dr. Anurag Tiwari" description="Research publications and scholarly contributions by Dr. Anurag Tiwari.">
-  <main class="pub-page">
-    <a class="back-home" href="/anuragtiwari.cse.github.io/">← Home</a>
-    <div class="section-label">RESEARCH OUTPUT · SCHOLARLY RECORD</div>
-    <h1>Publications<span>.</span></h1>
-    <p class="pub-lead">A selected and growing record of journal articles, conference papers and book chapters. Paper-level DOI, full-text and source-code links will be added after verification.</p>
-    <div class="pub-tools">
-      <input id="pub-search" type="search" placeholder="Search title, author or venue…" aria-label="Search publications"/>
-      <select id="pub-type" aria-label="Filter by publication type">
-        <option value="all">All publication types</option>
-        <option>Journal article</option><option>Conference paper</option><option>Conference proceeding</option><option>Book chapter</option>
+<BaseLayout title="Publications — Anurag Tiwari" description="Journal articles, conference papers and book chapters by Dr. Anurag Tiwari, South Asian University.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Publications</h1>
+      <p>{publications.length} papers on brain signals, medical imaging, feature selection and biological data. Each title links to the paper, or to a Google Scholar search where no direct link has been added yet.</p>
+    </header>
+
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search titles, authors or venues" aria-label="Search publications" />
+      <select id="theme" aria-label="Filter by research theme">
+        <option value="all">All themes</option>
+        {Object.entries(themes).map(([k, v]) => <option value={k}>{v}</option>)}
       </select>
-      <select id="pub-year" aria-label="Filter by year">
+      <select id="type" aria-label="Filter by publication type">
+        <option value="all">All types</option>
+        {types.map((t) => <option value={t}>{t}</option>)}
+      </select>
+      <select id="year" aria-label="Filter by year">
         <option value="all">All years</option>
-        {years.map((year) => <option value={year}>{year}</option>)}
-        <option value="unknown">Year not specified</option>
+        {years.map((y) => <option value={y}>{y}</option>)}
       </select>
     </div>
-    <p class="pub-count" id="pub-count">{publications.length} records</p>
-    <div class="pub-list" id="pub-list">
-      {publications.map((p, i) => <article class="pub-item" data-title={p.title.toLowerCase()} data-authors={p.authors.toLowerCase()} data-venue={p.venue.toLowerCase()} data-type={p.type} data-year={p.year ?? "unknown"}>
-        <div class="pub-number">{String(i+1).padStart(2,"0")}</div>
-        <div class="pub-main">
-          <div class="pub-meta"><span>{p.type}</span><span>{p.year ?? "Year to verify"}</span></div>
-          <h2>{p.title}</h2>
-          <p class="pub-authors">{p.authors}</p>
-          <p class="pub-venue">{p.venue}</p>
-          <div class="pub-links"><a href="https://scholar.google.com/citations?user=HLtrjaMAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Find paper on Google Scholar ↗</a></div>
-        </div>
-      </article>)}
-    </div>
-    <p id="no-results" class="no-results" hidden>No publications match these filters.</p>
-    <p class="pub-note">Bibliographic details above are transcribed from the information supplied for this website. Please verify author formatting, venue metadata, year, DOI and publication status before final public release. Citation counts and journal quartiles are intentionally not presented because they change over time and require a dated source.</p>
-  </main>
+    <p class="count" id="count" aria-live="polite">Showing all {publications.length}</p>
+
+    {byYear.map((g) => (
+      <section class="year-group" data-year={g.year}>
+        <h2>{g.year}</h2>
+        <ol class="pubs">
+          {g.items.map((p) => (
+            <li class="pub" data-search={`${p.title} ${p.authors} ${p.venue}`.toLowerCase()} data-type={p.type} data-theme={p.theme}>
+              <div>
+                <a class="pub-title" href={p.doi ? `https://doi.org/${p.doi}` : (p.pdf || scholarSearch(p.title))}>{p.title}</a>
+                <p class="pub-authors" set:html={bold(p.authors)} />
+                <p class="pub-venue">{p.venue}{p.status === "accepted" && <span class="tag">Accepted</span>}</p>
+                <p class="pub-meta">{p.type}, {themes[p.theme]}</p>
+                {(p.code || p.pdf || p.doi) && (
+                  <p class="pub-links">
+                    {p.doi && <a href={`https://doi.org/${p.doi}`}>DOI</a>}
+                    {p.pdf && <a href={p.pdf}>PDF</a>}
+                    {p.code && <a href={p.code}>Code</a>}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+    <p class="empty" id="empty" hidden>No papers match these filters. Clear the search box or set the filters back to "All".</p>
+  </div>
+
   <script>
-    const search = document.querySelector("#pub-search");
-    const type = document.querySelector("#pub-type");
-    const year = document.querySelector("#pub-year");
-    const items = [...document.querySelectorAll(".pub-item")];
-    const count = document.querySelector("#pub-count");
-    const empty = document.querySelector("#no-results");
-    function filterPublications() {
-      const q = search.value.trim().toLowerCase();
-      let visible = 0;
-      for (const item of items) {
-        const text = [item.dataset.title,item.dataset.authors,item.dataset.venue].join(" ");
-        const match = text.includes(q) && (type.value === "all" || item.dataset.type === type.value) && (year.value === "all" || item.dataset.year === year.value);
-        item.hidden = !match;
-        if (match) visible++;
+    const q = document.getElementById("q");
+    const theme = document.getElementById("theme");
+    const type = document.getElementById("type");
+    const year = document.getElementById("year");
+    const count = document.getElementById("count");
+    const empty = document.getElementById("empty");
+    const groups = [...document.querySelectorAll(".year-group")];
+    const total = document.querySelectorAll(".pub").length;
+
+    function apply() {
+      const term = q.value.trim().toLowerCase();
+      let shown = 0;
+      for (const g of groups) {
+        let inGroup = 0;
+        const yearOk = year.value === "all" || g.dataset.year === year.value;
+        for (const li of g.querySelectorAll(".pub")) {
+          const ok = yearOk
+            && (!term || li.dataset.search.includes(term))
+            && (theme.value === "all" || li.dataset.theme === theme.value)
+            && (type.value === "all" || li.dataset.type === type.value);
+          li.hidden = !ok;
+          if (ok) inGroup++;
+        }
+        g.hidden = inGroup === 0;
+        shown += inGroup;
       }
-      count.textContent = `${visible} of ${items.length} records`;
-      empty.hidden = visible !== 0;
+      count.textContent = shown === total ? `Showing all ${total}` : `Showing ${shown} of ${total}`;
+      empty.hidden = shown !== 0;
     }
-    search.addEventListener("input", filterPublications);
-    type.addEventListener("change", filterPublications);
-    year.addEventListener("change", filterPublications);
+    [q, theme, type, year].forEach((el) => el.addEventListener("input", apply));
   </script>
 </BaseLayout>
-<style>
-.pub-page{max-width:1120px;margin:0 auto;padding:55px 6vw 100px}.back-home{display:inline-block;font-size:12px;margin-bottom:55px;color:#617988}.pub-page h1{font:800 clamp(48px,7vw,82px)/1 Manrope,sans-serif;letter-spacing:-5px;margin:20px 0}.pub-page h1 span{color:#679bb0}.pub-lead{max-width:680px;color:#697785;font-size:14px;line-height:1.8}.pub-tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-top:40px}.pub-tools input,.pub-tools select{border:1px solid #dce3e3;background:#fff;padding:13px 14px;font:12px "DM Sans",sans-serif;color:#253747;min-width:0}.pub-count{font-size:10px;color:#6d8290;letter-spacing:1px;margin:25px 0 10px}.pub-item{display:grid;grid-template-columns:55px 1fr;gap:20px;padding:26px 0;border-top:1px solid #dce3e3}.pub-number{font:500 13px Manrope;color:#8ca5b0;padding-top:3px}.pub-meta{display:flex;gap:16px;text-transform:uppercase;font-size:9px;letter-spacing:1.3px;color:#6c8c9c}.pub-item h2{font:700 19px/1.45 Manrope,sans-serif;letter-spacing:-.4px;margin:10px 0}.pub-authors,.pub-venue{font-size:11px;line-height:1.7;color:#697785;margin:3px 0}.pub-venue{font-style:italic}.pub-links{margin-top:12px}.pub-links a{font-size:10px;font-weight:700;color:#3e7892}.pub-item[hidden]{display:none}.no-results{padding:30px 0;color:#687985}.pub-note{margin-top:50px;padding:20px;background:#edf2f1;color:#687985;font-size:10px;line-height:1.8}@media(max-width:650px){.pub-tools{grid-template-columns:1fr}.pub-item{grid-template-columns:30px 1fr;gap:12px}.pub-page{padding-top:35px}}
-</style>
