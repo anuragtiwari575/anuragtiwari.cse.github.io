@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { students, openings } from "../data/site.js";
+import { url } from "../lib.js";
+
+const current = students.filter((s) => s.status !== "alumni");
+const alumni = students.filter((s) => s.status === "alumni");
+const groups = [
+  { title: "Current students", rows: current },
+  { title: "Alumni", rows: alumni }
+].filter((g) => g.rows.length);
+---
+<BaseLayout title="Group — Anurag Tiwari" heading="Group">
+  <p slot="intro">{openings} <a href={url("contact/")}>Contact details</a>.</p>
+  <div class="wrap">
+    {groups.map((g) => (
+      <section class="block cv-block">
+        <h2>{g.title}</h2>
+        <ol class="timeline">
+          {g.rows.map((s) => (
+            <li>
+              <span class="when">{s.degree}{s.since ? `, ${s.since}` : ""}</span>
+              <div>
+                <p class="what">{s.link ? <a href={s.link}>{s.name}</a> : s.name}</p>
+                {s.topic && <p class="where">{s.topic}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

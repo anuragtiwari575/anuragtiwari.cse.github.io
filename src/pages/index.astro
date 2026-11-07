@@ -1,178 +1,71 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import EegBand from "../components/EegBand.astro";
 import { publications, themes } from "../data/publications.js";
 import { news } from "../data/news.js";
+import { profile, bio, research } from "../data/site.js";
+import { url, linkFor, boldAuthor } from "../lib.js";
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const scholarSearch = (t) => `https://scholar.google.com/scholar?q=${encodeURIComponent(`"${t}"`)}`;
-const linkFor = (p) => p.doi ? `https://doi.org/${p.doi}` : (p.pdf || scholarSearch(p.title));
-const bold = (authors) => authors.replace(/A\. Tiwari/g, "<strong>A. Tiwari</strong>");
-
-/* ---- EEG band: 8 channels, motor channels highlighted ----------------------
-   Deterministic (seeded) so the picture is identical on every build.
-   Over C3/Cz/C4 the mu rhythm drops during the shaded window: the
-   event-related desynchronisation that motor-imagery BCIs detect. */
-let seed = 11;
-const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-const channels = ["Fp1", "F3", "C3", "Cz", "C4", "P3", "O1", "O2"];
-const picked = new Set(["C3", "Cz", "C4"]);
-const W = 1200, X0 = 52, TOP = 26, GAP = 34, N = 440;
-const WIN = [600, 880];
-const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
-const traces = channels.map((name, i) => {
-  const y0 = TOP + i * GAP;
-  const ph = [rnd() * 6.28, rnd() * 6.28, rnd() * 6.28];
-  const f = [0.36 + rnd() * 0.04, 0.06 + rnd() * 0.02, 0.9 + rnd() * 0.2];
-  let n = 0, d = "";
-  for (let k = 0; k <= N; k++) {
-    const x = X0 + (W - X0 - 6) * k / N;
-    n = 0.7 * n + 0.3 * (rnd() - 0.5);
-    let mu = Math.sin(k * f[0] + ph[0]);
-    if (picked.has(name)) mu *= 1 - 0.75 * smooth(WIN[0] - 30, WIN[0] + 20, x) * (1 - smooth(WIN[1] - 20, WIN[1] + 30, x));
-    const v = 7 * mu + 3.5 * Math.sin(k * f[1] + ph[1]) + 1.2 * Math.sin(k * f[2] + ph[2]) + 10 * n;
-    d += (k ? "L" : "M") + x.toFixed(1) + " " + (y0 + v).toFixed(1);
-  }
-  return { name, y0, d, picked: picked.has(name) };
-});
-const H = TOP + GAP * (channels.length - 1) + 30;
-
-/* ---- content ---------------------------------------------------------------- */
-const research = [
-  { key: "signals", text: "EEG, iEEG and sEMG are noisy, non-stationary and different for every person. I build spatiotemporal and representation-learning models for motor imagery, inner speech and gesture recognition, and test whether what they learn stays stable when the signal is perturbed." },
-  { key: "evaluation", text: "A model that recognises the patient rather than the disease looks excellent on a benchmark. I design the checks that catch this: leave-one-subject-out validation, patient-level leakage audits, and bootstrap and permutation comparisons." },
-  { key: "optimization", text: "Most electrodes and most features add noise. My PhD at IIT (BHU) treated channel and feature selection as a combinatorial search, using binary butterfly, firefly and Jaya optimisers together with information-theoretic criteria." },
-  { key: "imaging", text: "Sparse-view CT reconstruction, physics-guided MRI reconstruction, and classification on small, imbalanced clinical datasets such as brain MRI in Wilson’s disease." },
-  { key: "biology", text: "Gene-expression meta-analysis, a review of the genetics of Wilson’s disease, and multi-omics learning for plant protein structure prediction. This is where I am taking statistical learning next: careful inference that generalises across cohorts." }
-].map((r) => ({ ...r, title: themes[r.key], papers: publications.filter((p) => p.theme === r.key).slice(0, 3) }));
-
-const selected = publications.filter((p) => p.featured);
-
-const background = [
-  { when: "2026 – now", what: "Assistant Professor, Computer Science and Engineering", where: "South Asian University, New Delhi" },
-  { when: "2022 – 2026", what: "Assistant Professor", where: "Thapar Institute of Engineering and Technology, Patiala" },
-  { when: "2022", what: "Assistant Professor", where: "VIT Bhopal University" },
-  { when: "2018 – 2024", what: "PhD, Computer Science and Engineering", where: "IIT (BHU) Varanasi", note: "Thesis: Performance improvement in non-invasive brain–computer interfaces using combinatorial search space optimisation and machine learning. Defended March 2024." },
-  { when: "2014 – 2016", what: "MTech, Computer Science and Engineering, and research assistant", where: "IIIT Allahabad", note: "GATE scholarship." },
-  { when: "2007 – 2011", what: "BTech, Information Technology", where: "Uttar Pradesh Technical University" }
-];
-const awards = [
-  "Best Paper Award, International Conference on Computer, Communication and Computational Sciences, Thailand, 2018",
-  "Travel grant, IEEE/RSJ IROS, Macau, 2019"
-];
+const latest = news.slice(0, 3);
+const selected = publications.filter((p) => p.featured).slice(0, 5);
 ---
 <BaseLayout>
   <section class="hero wrap">
     <div class="hero-text">
-      <h1>Anurag Tiwari</h1>
-      <p class="lede">I build machine-learning methods for noisy, high-dimensional biological data — brain signals, medical images and omics — and check whether the results still hold for people the model has never seen.</p>
-      <p class="post">Assistant Professor, Computer Science and Engineering<br />South Asian University, New Delhi</p>
+      <h1>{profile.name}</h1>
+      <p class="lede">{profile.lede}</p>
+      <p class="post">{profile.title}<br />{profile.institution}</p>
       <ul class="links">
-        <li><a href="https://scholar.google.com/citations?user=HLtrjaMAAAAJ&hl=en">Google Scholar</a></li>
-        <li><a href="https://orcid.org/0000-0001-6816-0113">ORCID</a></li>
-        <li><a href="https://github.com/anuragtiwari575">GitHub</a></li>
-        <li><a href="mailto:anuragtiwari@sau.int">anuragtiwari@sau.int</a></li>
+        <li><a href={profile.scholar}>Google Scholar</a></li>
+        <li><a href={profile.orcid}>ORCID</a></li>
+        <li><a href={profile.github}>GitHub</a></li>
+        <li><a href={`mailto:${profile.emails[0]}`}>{profile.emails[0]}</a></li>
+        {profile.cvPdf && <li><a href={url(profile.cvPdf)}>CV (PDF)</a></li>}
       </ul>
     </div>
     <figure class="portrait">
-      <img src={`${base}/images/profile-outdoor.jpeg`} alt="Anurag Tiwari" width="960" height="960" />
+      <img src={url("images/profile-outdoor.jpeg")} alt={profile.name} width="960" height="960" />
     </figure>
   </section>
 
-  <figure class="eeg wrap" aria-labelledby="eeg-caption">
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Eight EEG channels. During the shaded window the rhythm over channels C3, Cz and C4 weakens.">
-      <rect class="eeg-window" x={WIN[0]} y="4" width={WIN[1] - WIN[0]} height={H - 8} rx="3" />
-      <text class="eeg-window-label" x={WIN[0] + 10} y={H - 12}>imagined hand movement</text>
-      {traces.map((t, i) => (
-        <g class={t.picked ? "ch picked" : "ch"} style={`--i:${i}`}>
-          <text x="0" y={t.y0 + 4}>{t.name}</text>
-          <path d={t.d} pathLength="1" />
-        </g>
-      ))}
-    </svg>
-    <figcaption id="eeg-caption">Out of many EEG electrodes, only a few carry the signal you need. Over the motor cortex (C3, Cz, C4) the rhythm weakens when a person imagines moving a hand. Finding those few channels automatically was the subject of my PhD.</figcaption>
-  </figure>
+  <EegBand />
 
-  <section class="block wrap" id="news">
-    <h2>News</h2>
-    <ol class="news">
-      {news.map((n) => (
-        <li><time>{n.date}</time><p set:html={n.text} /></li>
-      ))}
-    </ol>
+  <section class="block wrap home-grid">
+    <div>
+      <h2>About</h2>
+      <div class="prose">{bio.map((p) => <p>{p}</p>)}</div>
+    </div>
+    <aside>
+      <div class="block-head"><h2>Latest news</h2><a class="more" href={url("news/")}>All news</a></div>
+      <ol class="news compact">
+        {latest.map((n) => <li><time>{n.date}</time><p set:html={n.text} /></li>)}
+      </ol>
+    </aside>
   </section>
 
-  <section class="block wrap" id="research">
-    <h2>Research</h2>
-    <p class="section-intro">One question runs through most of this work: when a model reports a good number on biological data, how much of it will survive a new subject, a new scanner or a new cohort?</p>
-    <div class="themes">
+  <section class="block wrap">
+    <div class="block-head"><h2>Research</h2><a class="more" href={url("research/")}>Research in detail</a></div>
+    <ul class="glance">
       {research.map((r) => (
-        <article class="theme" id={`theme-${r.key}`}>
-          <h3>{r.title}</h3>
-          <p>{r.text}</p>
-          {r.papers.length > 0 && (
-            <ul class="theme-papers">
-              {r.papers.map((p) => (
-                <li><a href={linkFor(p)}>{p.title}</a> <span class="venue-year">{p.status === "accepted" ? "accepted, " : ""}{p.year}</span></li>
-              ))}
-            </ul>
-          )}
-        </article>
+        <li><a href={url(`research/#${r.key}`)}>{themes[r.key]}</a><p>{r.short}</p></li>
       ))}
-    </div>
+    </ul>
   </section>
 
-  <section class="block wrap" id="publications">
-    <div class="block-head">
-      <h2>Selected publications</h2>
-      <a class="more" href={`${base}/publications/`}>All {publications.length} publications</a>
-    </div>
-    <p class="section-intro">Cited 545 times on Google Scholar (June 2026), h-index 9.</p>
+  <section class="block wrap">
+    <div class="block-head"><h2>Selected publications</h2><a class="more" href={url("publications/")}>All {publications.length} publications</a></div>
+    <p class="section-intro">{profile.metrics}</p>
     <ol class="pubs">
       {selected.map((p) => (
         <li class="pub">
           <span class="pub-year">{p.year}</span>
           <div>
             <a class="pub-title" href={linkFor(p)}>{p.title}</a>
-            <p class="pub-authors" set:html={bold(p.authors)} />
+            <p class="pub-authors" set:html={boldAuthor(p.authors)} />
             <p class="pub-venue">{p.venue}{p.status === "accepted" && <span class="tag">Accepted</span>}</p>
           </div>
         </li>
       ))}
     </ol>
-  </section>
-
-  <section class="block wrap" id="background">
-    <h2>Background</h2>
-    <ol class="timeline">
-      {background.map((b) => (
-        <li>
-          <span class="when">{b.when}</span>
-          <div>
-            <p class="what">{b.what}</p>
-            <p class="where">{b.where}</p>
-            {b.note && <p class="note">{b.note}</p>}
-          </div>
-        </li>
-      ))}
-    </ol>
-    <h3 class="awards-head">Awards</h3>
-    <ul class="awards">{awards.map((a) => <li>{a}</li>)}</ul>
-  </section>
-
-  <section class="contact" id="contact">
-    <div class="wrap contact-inner">
-      <div>
-        <h2>Get in touch</h2>
-        <p>I am glad to hear from students who want to do a PhD or a project in any of the areas above, and from researchers interested in collaborating. If you are a student, please attach your CV and say which theme interests you and why.</p>
-      </div>
-      <dl class="contact-list">
-        <dt>Email</dt>
-        <dd><a href="mailto:anuragtiwari@sau.int">anuragtiwari@sau.int</a><br /><a href="mailto:anuragtiwari.rs.cse17@itbhu.ac.in">anuragtiwari.rs.cse17@itbhu.ac.in</a></dd>
-        <dt>Address</dt>
-        <dd>Department of Computer Science and Engineering<br />South Asian University, Maidan Garhi<br />New Delhi 110068, India</dd>
-        <dt>Profiles</dt>
-        <dd><a href="https://scholar.google.com/citations?user=HLtrjaMAAAAJ&hl=en">Google Scholar</a>, <a href="https://orcid.org/0000-0001-6816-0113">ORCID</a>, <a href="https://github.com/anuragtiwari575">GitHub</a></dd>
-      </dl>
-    </div>
   </section>
 </BaseLayout>

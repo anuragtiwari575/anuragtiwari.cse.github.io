@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { teaching } from "../data/site.js";
+import { url } from "../lib.js";
+---
+<BaseLayout title="Teaching — Anurag Tiwari" heading="Teaching">
+  <div class="wrap">
+    {teaching.length === 0 ? (
+      <p class="section-intro">Courses will be listed here. <a href={url()}>Go to the homepage</a>.</p>
+    ) : (
+      <ol class="timeline">
+        {teaching.map((c) => (
+          <li>
+            <span class="when">{c.when}</span>
+            <div>
+              <p class="what">{c.link ? <a href={c.link}>{c.course}</a> : c.course}{c.code && ` (${c.code})`}</p>
+              <p class="where">{[c.level, c.where].filter(Boolean).join(", ")}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+</BaseLayout>

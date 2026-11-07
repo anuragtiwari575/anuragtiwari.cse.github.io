@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { profile, experience, education, skills, awards } from "../data/site.js";
+import { url } from "../lib.js";
+
+const sections = [
+  { title: "Experience", rows: experience },
+  { title: "Education", rows: education }
+];
+---
+<BaseLayout title="CV — Anurag Tiwari" heading="Curriculum vitae">
+  <p slot="intro">
+    {profile.cvPdf ? <a href={url(profile.cvPdf)}>Download the full CV (PDF)</a> : "A short version of my CV. For the full publication list, see the publications page."}
+  </p>
+  <div class="wrap">
+    {sections.map((s) => (
+      <section class="block cv-block">
+        <h2>{s.title}</h2>
+        <ol class="timeline">
+          {s.rows.map((b) => (
+            <li>
+              <span class="when">{b.when}</span>
+              <div>
+                <p class="what">{b.what}</p>
+                <p class="where">{b.where}</p>
+                {b.note && <p class="note">{b.note}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    <section class="block cv-block">
+      <h2>Methods and tools</h2>
+      <dl class="skills">
+        {skills.map((s) => <><dt>{s.area}</dt><dd>{s.items}</dd></>)}
+      </dl>
+    </section>
+
+    <section class="block cv-block">
+      <h2>Awards</h2>
+      <ul class="awards">{awards.map((a) => <li>{a}</li>)}</ul>
+    </section>
+
+    <section class="block cv-block">
+      <h2>Publications</h2>
+      <p class="section-intro">{profile.metrics} <a href={url("publications/")}>See the full list.</a></p>
+    </section>
+  </div>
+</BaseLayout>

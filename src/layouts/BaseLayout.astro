@@ -1,14 +1,27 @@
 ---
 import "../styles/global.css";
+import { base, url } from "../lib.js";
+import { profile, teaching, students } from "../data/site.js";
+
 const {
   title = "Anurag Tiwari — Machine learning for biological signals and images",
-  description = "Dr. Anurag Tiwari, Assistant Professor of Computer Science and Engineering at South Asian University, New Delhi. Machine learning for EEG, medical imaging and omics data, and evaluation that can be trusted."
+  description = "Dr. Anurag Tiwari, Assistant Professor of Computer Science and Engineering at South Asian University, New Delhi. Machine learning for EEG, medical imaging and omics data, and evaluation that can be trusted.",
+  heading
 } = Astro.props;
-// Works with base "/anuragtiwari.cse.github.io" today and with base "/" after a repo rename.
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const path = Astro.url.pathname;
-const onHome = path === `${base}/` || path === base || path === "/";
-const home = onHome ? "" : `${base}/`;
+
+// Menu. Teaching and Group show up only once site.js has entries for them.
+const nav = [
+  { label: "Home", path: "" },
+  { label: "Research", path: "research/" },
+  { label: "Publications", path: "publications/" },
+  { label: "News", path: "news/" },
+  ...(teaching.length ? [{ label: "Teaching", path: "teaching/" }] : []),
+  ...(students.length ? [{ label: "Group", path: "group/" }] : []),
+  { label: "CV", path: "cv/" },
+  { label: "Contact", path: "contact/" }
+];
+const here = Astro.url.pathname.replace(/\/?$/, "/");
+const isCurrent = (p) => here === `${base}/${p}` || (p === "" && here === "/");
 ---
 <!doctype html>
 <html lang="en">
@@ -19,7 +32,7 @@ const home = onHome ? "" : `${base}/`;
     <meta name="theme-color" content="#FAFBF7" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${base}/images/profile-outdoor.jpeg`} />
+    <meta property="og:image" content={url("images/profile-outdoor.jpeg")} />
     <title>{title}</title>
     <link rel="icon" href={`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231D2522'/><path d='M3 17h6l3-8 4 15 3-11 2 4h8' fill='none' stroke='%237FD1B9' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/></svg>`} />
   </head>
@@ -27,26 +40,28 @@ const home = onHome ? "" : `${base}/`;
     <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="wrap header-inner">
-        <a class="wordmark" href={`${base}/`}>Anurag Tiwari</a>
+        <a class="wordmark" href={url()}>{profile.name}</a>
         <nav aria-label="Main">
-          <a href={`${home}#research`}>Research</a>
-          <a href={`${home}#news`}>News</a>
-          <a href={`${base}/publications/`} aria-current={path.includes("/publications") ? "page" : undefined}>Publications</a>
-          <a href={`${home}#background`}>Background</a>
-          <a href={`${home}#contact`}>Contact</a>
+          {nav.map((n) => <a href={url(n.path)} aria-current={isCurrent(n.path) ? "page" : undefined}>{n.label}</a>)}
         </nav>
       </div>
     </header>
     <main id="main">
+      {heading && (
+        <header class="page-head wrap">
+          <h1>{heading}</h1>
+          <slot name="intro" />
+        </header>
+      )}
       <slot />
     </main>
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <span>Anurag Tiwari, South Asian University, New Delhi</span>
+        <span>{profile.name}, {profile.institution}</span>
         <span>
-          <a href="https://scholar.google.com/citations?user=HLtrjaMAAAAJ&hl=en">Google Scholar</a>
-          <a href="https://orcid.org/0000-0001-6816-0113">ORCID</a>
-          <a href="https://github.com/anuragtiwari575">GitHub</a>
+          <a href={profile.scholar}>Google Scholar</a>
+          <a href={profile.orcid}>ORCID</a>
+          <a href={profile.github}>GitHub</a>
         </span>
       </div>
     </footer>
