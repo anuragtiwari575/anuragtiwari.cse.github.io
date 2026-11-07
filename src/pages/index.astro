@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import EegBand from "../components/EegBand.astro";
 import { publications, themes } from "../data/publications.js";
 import { news } from "../data/news.js";
 import { profile, bio, research } from "../data/site.js";
@@ -27,8 +26,6 @@ const selected = publications.filter((p) => p.featured).slice(0, 5);
       <img src={url("images/profile-snow.jpg")} alt={profile.name} width="900" height="900" />
     </figure>
   </section>
-
-  <EegBand />
 
   <section class="block wrap home-grid">
     <div>
