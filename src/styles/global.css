@@ -86,6 +86,12 @@ p { margin: 0; }
 .prose p { margin-top: 10px; text-align: justify; hyphens: auto; }
 .news.compact { margin-top: 12px; }
 .news.compact li { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
+/* PhD recruitment notice */
+.recruiting { margin-top: 20px; background: #EEF1FB; border: 1px solid #D5DBF4; border-left: 4px solid var(--link); border-radius: 4px; padding: 16px 22px; }
+.recruiting h2 { font-size: 17px; font-weight: 700; color: var(--link); }
+.recruiting p { margin-top: 6px; text-align: justify; }
+.page-head + .wrap .recruiting { margin-top: 16px; }
+
 /* Research overview label, research focus cards, open science panel */
 .hero-label { font-size: 16px; font-weight: 700; color: var(--signal); margin-top: 16px; }
 .hero-label + .lede { margin-top: 6px; }
@@ -202,6 +208,8 @@ p { margin: 0; }
   .filters { grid-template-columns: 1fr; }
   .focus { grid-template-columns: 1fr; }
   .open-science { padding: 18px 18px; }
+  .recruiting { padding: 14px 16px; }
+  .recruiting p { text-align: left; }
   .open-science blockquote p { font-size: 16px; text-align: left; }
   .footer-inner a { margin: 0 16px 0 0; }
 }

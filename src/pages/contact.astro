@@ -2,8 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { profile, openings } from "../data/site.js";
 import { url } from "../lib.js";
+import Recruiting from "../components/Recruiting.astro";
 ---
 <BaseLayout title="Contact — Anurag Tiwari" heading="Contact">
+  <div class="wrap"><Recruiting /></div>
   <div class="wrap contact-inner page-contact">
     <div>
       <h2>Students and collaborators</h2>

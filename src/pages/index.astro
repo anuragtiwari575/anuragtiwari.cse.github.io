@@ -4,6 +4,7 @@ import { publications } from "../data/publications.js";
 import { news } from "../data/news.js";
 import { profile, bio, focus, openScience } from "../data/site.js";
 import { url, linkFor, boldAuthor } from "../lib.js";
+import Recruiting from "../components/Recruiting.astro";
 
 const latest = news.slice(0, 3);
 const selected = publications.filter((p) => p.featured).slice(0, 5);
@@ -27,6 +28,8 @@ const selected = publications.filter((p) => p.featured).slice(0, 5);
       <img src={url("images/profile-snow.jpg")} alt={profile.name} width="900" height="900" />
     </figure>
   </section>
+
+  <div class="wrap"><Recruiting /></div>
 
   <section class="block wrap">
     <div class="block-head"><h2>Research focus</h2><a class="more" href={url("research/")}>Research in detail</a></div>

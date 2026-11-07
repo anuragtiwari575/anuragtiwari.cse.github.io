@@ -81,4 +81,11 @@ export const awards = [
 export const teaching = [];
 // students: { name: "", degree: "PhD", topic: "", since: 2026, status: "current" | "alumni", link: optional }
 export const students = [];
+// PhD recruitment notice on the Home and Contact pages. Set active: false to hide it.
+export const recruiting = {
+  active: true,
+  scheme: "Visvesvaraya Scheme 2026",
+  link: "https://admissions.sau.int/computer-science/",
+  email: "anuragtiwari@sau.int"
+};
 export const openings = "I am glad to hear from students who want to do a PhD or a project in any of the research areas, and from researchers interested in collaborating. If you are a student, please attach your CV and say which theme interests you and why.";
