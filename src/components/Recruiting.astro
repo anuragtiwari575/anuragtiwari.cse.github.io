@@ -1,5 +1,6 @@
 ---
 import { recruiting } from "../data/site.js";
+import { url } from "../lib.js";
 const r = recruiting;
 const shortLink = r.link.replace(/^https?:\/\//, "").replace(/\/$/, "");
 ---
@@ -7,6 +8,6 @@ const shortLink = r.link.replace(/^https?:\/\//, "").replace(/\/$/, "");
   <aside class="recruiting" aria-labelledby="recruiting-title">
     <h2 id="recruiting-title">PhD positions open</h2>
     <p>Currently, I am recruiting highly motivated students for PhD enrolment under the <a href={r.link}>{r.scheme}</a>. For more details, visit <a href={r.link}>{shortLink}</a>.</p>
-    <p>Before applying to work with me, send your CV and research statement to <a href={`mailto:${r.email}?subject=PhD%20application%20-%20${encodeURIComponent(r.scheme)}`}>{r.email}</a>.</p>
+    <p>Before applying to work with me, send your CV and research statement to <a href={`mailto:${r.email}?subject=PhD%20application%20-%20${encodeURIComponent(r.scheme)}`}>{r.email}</a>. <a href={url("students/#apply")}>Read how to apply</a>.</p>
   </aside>
 )}

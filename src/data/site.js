@@ -89,4 +89,52 @@ export const recruiting = {
   link: "https://admissions.sau.int/computer-science/",
   email: "anuragtiwari@sau.int"
 };
+// Prospective Students page. Edit freely; nothing here mentions a lab, funding or compute.
+export const lookingFor = [
+  "Comfortable with Python and PyTorch, and willing to read and reproduce papers.",
+  "Solid basics in linear algebra, probability and signal or image processing.",
+  "Curious about the brain or medical imaging; prior experience is a plus, not a requirement.",
+  "Patient with careful evaluation: subject-wise splits, multiple seeds, honest reporting."
+];
+
+export const howWeWork = [
+  "Regular one-to-one meetings with clear, written goals for each week.",
+  "Every project is planned from the start towards a strong peer-reviewed venue.",
+  "Students are co-authors on the papers they contribute to.",
+  "Code is released openly with each paper, so your work is visible and reusable."
+];
+
+// Draft research problems for students. Review before publishing.
+export const openProblems = [
+  { title: "Decoding imagined movement and imagery for a new person",
+    text: "Brain–computer interface decoders usually need recalibration for every user. Build motor and visual imagery decoders that transfer to an unseen subject with little or no calibration data.",
+    skills: "EEG processing, PyTorch, domain adaptation", venues: "EMBC, IEEE TNSRE, JBHI" },
+  { title: "Self-supervised representations of brain signals",
+    text: "Learn general-purpose representations from unlabelled EEG across datasets, and test whether they stay stable under noise, channel loss and new recording setups.",
+    skills: "Self-supervised learning, time-series models", venues: "NeurIPS / ICLR workshops, IEEE TNNLS" },
+  { title: "Seizure dynamics and interictal biomarkers",
+    text: "Characterise epileptic activity between seizures, and find markers that predict where and when seizures arise.",
+    skills: "Signal processing, sequence models, statistics", venues: "EMBC, IEEE JBHI" },
+  { title: "Presurgical neuroimaging for epilepsy",
+    text: "Use MRI to help localise the epileptogenic zone and support presurgical evaluation, with models that explain what they rely on.",
+    skills: "Medical image analysis, 3D CNNs / transformers", venues: "MICCAI, Medical Image Analysis" },
+  { title: "Predicting outcome after epilepsy surgery",
+    text: "Combine imaging and neural signals to estimate the chance of seizure freedom or recurrence after surgery.",
+    skills: "Multimodal learning, survival or risk models", venues: "MICCAI, IEEE JBHI" },
+  { title: "Evaluation you can trust in medical AI",
+    text: "Measure how much patient identity leaks into learned medical-image representations, and design evaluation protocols that catch inflated benchmark results.",
+    skills: "Representation learning, careful experimental design", venues: "MICCAI, MIDL, IEEE TMI" }
+];
+
+export const applySteps = [
+  "Read the research focus and the open problems on this page, and pick the one that interests you most.",
+  "Read one of my papers and note one thing you would test or improve.",
+  "Email your CV and a one-page research statement covering both points to the address below, with the subject line in the form “Prospective student – <problem title>”."
+];
+
+export const faq = [
+  { q: "I have not done research before. Can I still apply?", a: "Yes. A careful reading of one paper and a clear statement of what you would try next matter more than prior publications." },
+  { q: "Which positions are open right now?", a: "PhD positions under the Visvesvaraya Scheme 2026, as described in the notice above." },
+  { q: "Will I get a reply?", a: "I read every application. Applications that follow the steps on this page get priority." }
+];
 export const openings = "I am glad to hear from students who want to do a PhD or a project in any of the research areas, and from researchers interested in collaborating. If you are a student, please attach your CV and say which theme interests you and why.";

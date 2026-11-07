@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Recruiting from "../components/Recruiting.astro";
+import { lookingFor, howWeWork, openProblems, applySteps, faq, recruiting } from "../data/site.js";
+import { url } from "../lib.js";
+---
+<BaseLayout title="Prospective Students — Anurag Tiwari" heading="Prospective students">
+  <p slot="intro">I work with students who want to do careful, publishable research on brain signals and medical images. This page explains what I look for, the problems you could work on, and how to apply.</p>
+  <div class="wrap"><Recruiting /></div>
+
+  <section class="block wrap two-col">
+    <div>
+      <h2>Who I am looking for</h2>
+      <ul class="ticks">{lookingFor.map((t) => <li>{t}</li>)}</ul>
+    </div>
+    <div>
+      <h2>How we will work</h2>
+      <ul class="ticks">{howWeWork.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="block wrap" id="problems">
+    <div class="block-head"><h2>Open research problems</h2><a class="more" href={url("research/")}>Research in detail</a></div>
+    <p class="section-intro">Each problem is sized for a PhD chapter or a strong conference or journal paper. The venues listed are where such work is usually published.</p>
+    <ol class="problems">
+      {openProblems.map((p) => (
+        <li>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <dl>
+            <dt>Skills</dt><dd>{p.skills}</dd>
+            <dt>Typical venues</dt><dd>{p.venues}</dd>
+          </dl>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="block wrap" id="apply">
+    <h2>How to apply</h2>
+    <ol class="steps">{applySteps.map((s) => <li>{s}</li>)}</ol>
+    <p class="apply-mail">Email: <a href={`mailto:${recruiting.email}?subject=Prospective%20student`}>{recruiting.email}</a></p>
+  </section>
+
+  <section class="block wrap">
+    <h2>Questions</h2>
+    <dl class="faq">
+      {faq.map((f) => <><dt>{f.q}</dt><dd>{f.a}</dd></>)}
+    </dl>
+  </section>
+</BaseLayout>
