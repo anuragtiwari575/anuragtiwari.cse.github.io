@@ -93,6 +93,7 @@ p { margin: 0; }
 .page-head + .wrap .recruiting { margin-top: 16px; }
 
 /* Research overview label, research focus cards, open science panel */
+.motto { font-style: italic; font-size: 16px; color: var(--muted); margin-top: 6px; }
 .hero-label { font-size: 16px; font-weight: 700; color: var(--signal); margin-top: 16px; }
 .hero-label + .lede { margin-top: 6px; }
 .focus { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }

@@ -3,6 +3,7 @@
 
 export const profile = {
   name: "Anurag Tiwari",
+  motto: "The art of intelligence lies in finding simplicity within complexity.",
   title: "Assistant Professor, Computer Science and Engineering",
   institution: "South Asian University, New Delhi",
   lede: "I develop advanced machine learning and neural representation learning methods for complex, high-dimensional biological data, with a particular focus on brain signals, medical imaging, and omics. My research emphasises methodological innovation, robust computational modelling, interpretability, and generalisation across unseen subjects and independent clinical cohorts.",
