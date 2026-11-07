@@ -21,7 +21,7 @@ import { url } from "../lib.js";
 
   <section class="block wrap" id="problems">
     <div class="block-head"><h2>Open research problems</h2><a class="more" href={url("research/")}>Research in detail</a></div>
-    <p class="section-intro">Each problem is sized for a PhD chapter or a strong conference or journal paper. The venues listed are where such work is usually published.</p>
+    <p class="section-intro">Each problem is sized for a PhD chapter or a strong conference or journal paper.</p>
     <ol class="problems">
       {openProblems.map((p) => (
         <li>
@@ -29,7 +29,6 @@ import { url } from "../lib.js";
           <p>{p.text}</p>
           <dl>
             <dt>Skills</dt><dd>{p.skills}</dd>
-            <dt>Typical venues</dt><dd>{p.venues}</dd>
           </dl>
         </li>
       ))}

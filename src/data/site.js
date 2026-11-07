@@ -108,22 +108,22 @@ export const howWeWork = [
 export const openProblems = [
   { title: "Decoding imagined movement and imagery for a new person",
     text: "Brain–computer interface decoders usually need recalibration for every user. Build motor and visual imagery decoders that transfer to an unseen subject with little or no calibration data.",
-    skills: "EEG processing, PyTorch, domain adaptation", venues: "EMBC, IEEE TNSRE, JBHI" },
+    skills: "EEG processing, PyTorch, domain adaptation" },
   { title: "Self-supervised representations of brain signals",
     text: "Learn general-purpose representations from unlabelled EEG across datasets, and test whether they stay stable under noise, channel loss and new recording setups.",
-    skills: "Self-supervised learning, time-series models", venues: "NeurIPS / ICLR workshops, IEEE TNNLS" },
+    skills: "Self-supervised learning, time-series models" },
   { title: "Seizure dynamics and interictal biomarkers",
     text: "Characterise epileptic activity between seizures, and find markers that predict where and when seizures arise.",
-    skills: "Signal processing, sequence models, statistics", venues: "EMBC, IEEE JBHI" },
+    skills: "Signal processing, sequence models, statistics" },
   { title: "Presurgical neuroimaging for epilepsy",
     text: "Use MRI to help localise the epileptogenic zone and support presurgical evaluation, with models that explain what they rely on.",
-    skills: "Medical image analysis, 3D CNNs / transformers", venues: "MICCAI, Medical Image Analysis" },
+    skills: "Medical image analysis, 3D CNNs / transformers" },
   { title: "Predicting outcome after epilepsy surgery",
     text: "Combine imaging and neural signals to estimate the chance of seizure freedom or recurrence after surgery.",
-    skills: "Multimodal learning, survival or risk models", venues: "MICCAI, IEEE JBHI" },
+    skills: "Multimodal learning, survival or risk models" },
   { title: "Evaluation you can trust in medical AI",
     text: "Measure how much patient identity leaks into learned medical-image representations, and design evaluation protocols that catch inflated benchmark results.",
-    skills: "Representation learning, careful experimental design", venues: "MICCAI, MIDL, IEEE TMI" }
+    skills: "Representation learning, careful experimental design" }
 ];
 
 export const applySteps = [
