@@ -52,7 +52,7 @@ p { margin: 0; }
 .post { font: 400 14px/1.5 var(--sans); color: var(--muted); margin-top: 22px; }
 .links { list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; gap: 8px 24px; font: 400 14px/1.4 var(--sans); }
 .portrait { margin: 0; }
-.portrait img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 66% 30%; border-radius: 4px; filter: saturate(0.9); }
+.portrait img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 70% 42%; border-radius: 4px; filter: saturate(0.9); }
 
 /* EEG band — the one bold thing on the page ------------------------------- */
 .eeg { margin-top: 24px; margin-bottom: 8px; }
@@ -111,6 +111,15 @@ p { margin: 0; }
 .skills dt { font-weight: 700; }
 .page-contact { padding-top: 40px; }
 .page-contact h2 { font-size: 20px; margin-bottom: 12px; }
+.page-contact .contact-list { margin-top: 28px; }
+
+/* Photos on Contact and News */
+.photo { margin: 0; }
+.photo img { width: 100%; height: auto; border-radius: 4px; }
+.photo figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.with-photo { display: grid; grid-template-columns: 1fr 260px; gap: 56px; align-items: start; }
+.photo.side { position: sticky; top: 96px; margin-top: 36px; }
+.photo.side img { aspect-ratio: 3 / 4; object-fit: cover; object-position: 60% 60%; }
 .theme-papers { grid-column: 2; list-style: none; padding: 0; margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
 .theme-papers li { padding-left: 18px; position: relative; margin-top: 8px; max-width: 44em; }
 .theme-papers li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 9px; height: 1.5px; background: var(--signal); }
@@ -169,7 +178,8 @@ p { margin: 0; }
   :root { --gutter: 120px; }
   .hero { grid-template-columns: 1fr 200px; gap: 36px; padding-top: 52px; }
   .lede { font-size: 16px; }
-  .contact-inner, .home-grid { grid-template-columns: 1fr; gap: 36px; }
+  .contact-inner, .home-grid, .with-photo { grid-template-columns: 1fr; gap: 36px; }
+  .photo.side { position: static; max-width: 240px; margin-top: 0; }
   .filters { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {

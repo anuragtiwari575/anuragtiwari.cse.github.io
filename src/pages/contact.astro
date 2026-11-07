@@ -1,20 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { profile, openings } from "../data/site.js";
+import { url } from "../lib.js";
 ---
 <BaseLayout title="Contact — Anurag Tiwari" heading="Contact">
   <div class="wrap contact-inner page-contact">
     <div>
       <h2>Students and collaborators</h2>
       <p>{openings}</p>
+      <dl class="contact-list">
+        <dt>Email</dt>
+        <dd>{profile.emails.map((e, i) => <>{i > 0 && <br />}<a href={`mailto:${e}`}>{e}</a></>)}</dd>
+        <dt>Address</dt>
+        <dd>{profile.address.map((l, i) => <>{i > 0 && <br />}{l}</>)}</dd>
+        <dt>Profiles</dt>
+        <dd><a href={profile.scholar}>Google Scholar</a>, <a href={profile.orcid}>ORCID</a>, <a href={profile.github}>GitHub</a></dd>
+      </dl>
     </div>
-    <dl class="contact-list">
-      <dt>Email</dt>
-      <dd>{profile.emails.map((e, i) => <>{i > 0 && <br />}<a href={`mailto:${e}`}>{e}</a></>)}</dd>
-      <dt>Address</dt>
-      <dd>{profile.address.map((l, i) => <>{i > 0 && <br />}{l}</>)}</dd>
-      <dt>Profiles</dt>
-      <dd><a href={profile.scholar}>Google Scholar</a>, <a href={profile.orcid}>ORCID</a>, <a href={profile.github}>GitHub</a></dd>
-    </dl>
+    <figure class="photo">
+      <img src={url("images/Campus.jpg")} alt="South Asian University campus, Maidan Garhi, New Delhi" width="900" height="433" loading="lazy" />
+      <figcaption>South Asian University, Maidan Garhi campus</figcaption>
+    </figure>
   </div>
 </BaseLayout>

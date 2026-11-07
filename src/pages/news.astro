@@ -1,20 +1,27 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { news } from "../data/news.js";
+import { url } from "../lib.js";
 
 const yearOf = (d) => (d.match(/\d{4}/) || ["Earlier"])[0];
 const years = [...new Set(news.map((n) => yearOf(n.date)))];
 ---
 <BaseLayout title="News — Anurag Tiwari" heading="News">
   <p slot="intro">Papers, talks, positions and other updates.</p>
-  <div class="wrap">
-    {years.map((y) => (
-      <section class="year-group">
-        <h2>{y}</h2>
-        <ol class="news">
-          {news.filter((n) => yearOf(n.date) === y).map((n) => <li><time>{n.date}</time><p set:html={n.text} /></li>)}
-        </ol>
-      </section>
-    ))}
+  <div class="wrap with-photo">
+    <div>
+      {years.map((y) => (
+        <section class="year-group">
+          <h2>{y}</h2>
+          <ol class="news">
+            {news.filter((n) => yearOf(n.date) === y).map((n) => <li><time>{n.date}</time><p set:html={n.text} /></li>)}
+          </ol>
+        </section>
+      ))}
+    </div>
+    <figure class="photo side">
+      <img src={url("images/Conference.jpeg")} alt="Anurag Tiwari at a conference" width="1224" height="1632" loading="lazy" />
+      <figcaption>At a conference</figcaption>
+    </figure>
   </div>
 </BaseLayout>
