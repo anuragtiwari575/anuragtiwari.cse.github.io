@@ -5,7 +5,7 @@ export const profile = {
   name: "Anurag Tiwari",
   title: "Assistant Professor, Computer Science and Engineering",
   institution: "South Asian University, New Delhi",
-  lede: "I build machine-learning methods for noisy, high-dimensional biological data — brain signals, medical images and omics — and check whether the results still hold for people the model has never seen.",
+  lede: "I develop advanced machine learning and neural representation learning methods for complex, high-dimensional biological data, with a particular focus on brain signals, medical imaging, and omics. My research emphasises methodological innovation, robust computational modelling, interpretability, and generalisation across unseen subjects and independent clinical cohorts.",
   emails: ["anuragtiwari@sau.int", "anuragtiwari.rs.cse17@itbhu.ac.in"],
   address: ["Department of Computer Science and Engineering", "South Asian University, Maidan Garhi", "New Delhi 110068, India"],
   scholar: "https://scholar.google.com/citations?user=HLtrjaMAAAAJ&hl=en",
@@ -21,6 +21,18 @@ export const bio = [
   "I completed my PhD in Computer Science and Engineering at IIT (BHU) Varanasi, where I worked on channel and feature selection for non-invasive brain–computer interfaces. My research now covers sequential modelling of neural time series (EEG, iEEG, sEMG), representation learning, medical imaging (MRI and CT) and multi-omics data.",
   "A recurring theme is evaluation that can be trusted: subject-level validation, auditing medical-imaging benchmarks for patient-level leakage, and testing whether learned representations stay stable under perturbation."
 ];
+
+// Research focus: shown as cards on the homepage.
+export const focus = [
+  { title: "Motor Imagery and Visual Imagery", text: "Investigating neural activity patterns and developing decoding methods for brain–computer interface applications." },
+  { title: "Neural Representation Learning", text: "Learning meaningful and discriminative representations from complex neural signals and multimodal brain data." },
+  { title: "Neural Signal Decoding", text: "Developing computational approaches for understanding and interpreting brain activity." },
+  { title: "Epilepsy and Seizure Dynamics", text: "Computational characterisation of epileptic activity, seizure patterns, and interictal neural biomarkers." },
+  { title: "Presurgical Neuroimaging", text: "Identifying imaging patterns and biomarkers to support seizure localisation, epileptogenic zone characterisation, and presurgical evaluation." },
+  { title: "Postsurgical Outcome Assessment", text: "Investigating imaging and neural patterns associated with surgical outcomes and seizure recurrence." }
+];
+
+export const openScience = "I strive to make my research code openly available and reusable, enabling fellow researchers and developers to build upon existing methods and contribute to the development of more effective medical and clinical systems.";
 
 // key must match a theme key in publications.js
 export const research = [

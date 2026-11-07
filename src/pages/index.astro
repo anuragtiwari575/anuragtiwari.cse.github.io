@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { publications, themes } from "../data/publications.js";
+import { publications } from "../data/publications.js";
 import { news } from "../data/news.js";
-import { profile, bio, research } from "../data/site.js";
+import { profile, bio, focus, openScience } from "../data/site.js";
 import { url, linkFor, boldAuthor } from "../lib.js";
 
 const latest = news.slice(0, 3);
@@ -12,6 +12,7 @@ const selected = publications.filter((p) => p.featured).slice(0, 5);
   <section class="hero wrap">
     <div class="hero-text">
       <h1>{profile.name}</h1>
+      <h2 class="hero-label">Research overview</h2>
       <p class="lede">{profile.lede}</p>
       <p class="post">{profile.title}<br />{profile.institution}</p>
       <ul class="links">
@@ -27,6 +28,23 @@ const selected = publications.filter((p) => p.featured).slice(0, 5);
     </figure>
   </section>
 
+  <section class="block wrap">
+    <div class="block-head"><h2>Research focus</h2><a class="more" href={url("research/")}>Research in detail</a></div>
+    <ul class="focus">
+      {focus.map((f) => (
+        <li><strong>{f.title}</strong><p>{f.text}</p></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <figure class="open-science">
+      <figcaption>Open science</figcaption>
+      <blockquote><p>“{openScience}”</p></blockquote>
+      <a href={profile.github}>Browse my code on GitHub</a>
+    </figure>
+  </section>
+
   <section class="block wrap home-grid">
     <div>
       <h2>About</h2>
@@ -38,15 +56,6 @@ const selected = publications.filter((p) => p.featured).slice(0, 5);
         {latest.map((n) => <li><time>{n.date}</time><p set:html={n.text} /></li>)}
       </ol>
     </aside>
-  </section>
-
-  <section class="block wrap">
-    <div class="block-head"><h2>Research</h2><a class="more" href={url("research/")}>Research in detail</a></div>
-    <ul class="glance">
-      {research.map((r) => (
-        <li><a href={url(`research/#${r.key}`)}>{themes[r.key]}</a><p>{r.short}</p></li>
-      ))}
-    </ul>
   </section>
 
   <section class="block wrap">

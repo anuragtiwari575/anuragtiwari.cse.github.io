@@ -86,10 +86,18 @@ p { margin: 0; }
 .prose p { margin-top: 10px; text-align: justify; hyphens: auto; }
 .news.compact { margin-top: 12px; }
 .news.compact li { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
-.glance { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 32px; }
-.glance li { border-top: 2px solid var(--signal); padding: 10px 0 16px; }
-.glance a { font-weight: 700; font-size: 15px; }
-.glance p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+/* Research overview label, research focus cards, open science panel */
+.hero-label { font-size: 16px; font-weight: 700; color: var(--signal); margin-top: 16px; }
+.hero-label + .lede { margin-top: 6px; }
+.focus { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.focus li { background: #fff; border: 1px solid var(--rule); border-top: 3px solid var(--signal); border-radius: 4px; padding: 14px 16px 16px; }
+.focus strong { display: block; font-size: 15px; line-height: 1.3; color: var(--ink); }
+.focus p { font-size: 13.5px; line-height: 1.55; color: var(--muted); margin-top: 6px; }
+.open-science { margin: 40px 0 0; background: var(--panel); border-left: 4px solid var(--signal); border-radius: 4px; padding: 24px 28px; }
+.open-science figcaption { font-size: 14px; font-weight: 700; color: var(--signal); }
+.open-science blockquote { margin: 8px 0 12px; }
+.open-science blockquote p { font: italic 700 18px/1.6 var(--serif); color: var(--ink); text-align: justify; }
+.open-science a { font-size: 14px; }
 
 /* CV, Group, Contact pages */
 .cv-block { padding-top: 32px; }
@@ -164,6 +172,7 @@ p { margin: 0; }
 /* Responsive -------------------------------------------------------------- */
 @media (max-width: 860px) {
   :root { --gutter: 120px; }
+  .focus { grid-template-columns: repeat(2, 1fr); }
   .hero { grid-template-columns: 1fr 180px; gap: 32px; padding-top: 24px; }
   .lede { font-size: 16px; }
   .contact-inner, .home-grid, .with-photo { grid-template-columns: 1fr; gap: 36px; }
@@ -191,5 +200,8 @@ p { margin: 0; }
   .contact-list { grid-template-columns: 1fr; gap: 2px; }
   .contact-list dd { margin-bottom: 14px; }
   .filters { grid-template-columns: 1fr; }
+  .focus { grid-template-columns: 1fr; }
+  .open-science { padding: 18px 18px; }
+  .open-science blockquote p { font-size: 16px; text-align: left; }
   .footer-inner a { margin: 0 16px 0 0; }
 }
